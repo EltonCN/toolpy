@@ -31,3 +31,6 @@ The ["examples"](/examples) folder have examples of how to use Toolpy.
 - [EltonCN](https://github.com/EltonCN)
 
 ## License
+
+MIT License
+Copyright (c) 2021-2022, Toolpy Developers.
