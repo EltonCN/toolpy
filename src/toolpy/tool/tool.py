@@ -34,10 +34,10 @@ class Tool(abc.ABC):
         Returns:
             Dict[str, str]: tool results.
         '''
-        return self.execute(query, context)
+        return self._execute(query, context)
 
     @abc.abstractmethod
-    def execute(self, query:Optional[Dict[str, str]], 
+    def _execute(self, query:Optional[Dict[str, str]], 
                 context:Optional[str]) -> Tuple[Dict[str, TextLike], Dict[str, str]]:
         '''
         Execute the tool.

@@ -17,7 +17,7 @@ class BasicTool(Tool):
         self._system_message = system_message
         self._json_mode = json_mode
 
-    def execute(self, query:Dict[str, str], 
+    def _execute(self, query:Dict[str, str], 
                 context:str) -> Tuple[Dict[str, TextLike], Dict[str, str]]:
 
         prompt = []
