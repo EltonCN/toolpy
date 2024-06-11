@@ -5,12 +5,12 @@ from .tool import Tool, TextLike
 
 class BasicTool(Tool):
 
-    def __init__(self, description:str, prompt_template:str, return_description:Dict[str,str],
+    def __init__(self, description:str, input_description:Dict[str, str], prompt_template:str, return_description:Dict[str,str],
                  system_message:Optional[str] = None, 
                  model_name: Optional[str] = None,
                  json_mode:bool=False) -> None:
         
-        super().__init__(description=description, model_name=model_name)
+        super().__init__(description=description, input_description=input_description, model_name=model_name)
     
         self._prompt_template = prompt_template
         self._return_description = return_description
