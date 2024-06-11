@@ -8,7 +8,7 @@ class ToolWrapper(Tool):
     def __init__(self, base_tool:Tool) -> None:
         assert isinstance(base_tool, Tool)
 
-        super().__init__(base_tool.description, None)
+        super().__init__(base_tool.description, base_tool.input_description)
 
         self._base_tool = base_tool
 

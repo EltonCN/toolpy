@@ -1,5 +1,6 @@
 import abc
 import json
+from types import MappingProxyType
 from typing import Dict, Union, List, final, Optional, Tuple
 
 from toolpy.llm import LLMRegistry, QueryLike
@@ -11,15 +12,20 @@ class Tool(abc.ABC):
     Base class for creating LLM tools.
     '''
 
-    def __init__(self, description:str, model_name:Optional[str] = None) -> None:
+    def __init__(self, description:str, input_description:Dict[str, str], model_name:Optional[str] = None) -> None:
         super().__init__()
 
         self._model_name = None
         self._description = description
+        self._input_description = input_description
 
     @property
     def description(self) -> str:
         return self._description
+    
+    @property
+    def input_description(self) -> MappingProxyType[str, str]:
+        return MappingProxyType(self._input_description)
 
     @final
     def __call__(self, query:Optional[Dict[str, str]]=None, 
@@ -32,7 +38,8 @@ class Tool(abc.ABC):
             context (str): context in the tool execution moment.
 
         Returns:
-            Dict[str, str]: tool results.
+            Dict[str, TextLike]: tool result.
+            Dict[str, str]: result keys description.
         '''
         return self._execute(query, context)
 

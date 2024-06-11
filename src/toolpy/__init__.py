@@ -1,2 +1,2 @@
-from .tool import Tool, BasicTool
+from .tool import Tool, BasicTool, Pipeline
 from . import llm
