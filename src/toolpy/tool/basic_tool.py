@@ -1,3 +1,4 @@
+from types import MappingProxyType
 from typing import Optional, Dict, Tuple
 
 from toolpy.llm import Role
@@ -13,7 +14,7 @@ class BasicTool(Tool):
         super().__init__(description=description, input_description=input_description, model_name=model_name)
     
         self._prompt_template = prompt_template
-        self._return_description = return_description
+        self._return_description = MappingProxyType(return_description)
         self._system_message = system_message
         self._json_mode = json_mode
 
