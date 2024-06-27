@@ -55,7 +55,8 @@ class GroqInterface(LLMInterface):
                                 response_format=response_format
                             )
                 
-            except groq.RateLimitError as _:
+            except groq.RateLimitError as e:
+                print(e)
                 time.sleep(2)
         
         return chat_completion.choices[0].message.content

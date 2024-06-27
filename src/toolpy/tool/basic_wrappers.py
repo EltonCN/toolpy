@@ -20,7 +20,7 @@ class MapInputWrapper(ToolWrapper):
 
         self._input_mapping = input_mapping
     
-    def _before_execution(self, query: Optional[Dict[str, str]], context: str | None) -> Tuple[Dict[str, str], str]:
+    def _before_execution(self, query: Optional[Dict[str, str]], context: Optional[str]) -> Tuple[Dict[str, str], str]:
         new_query = {}
 
         for name in query:

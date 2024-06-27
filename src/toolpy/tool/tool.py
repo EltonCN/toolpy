@@ -5,6 +5,13 @@ from typing import Dict, Union, List, final, Optional, Tuple
 
 from toolpy.llm import LLMRegistry, QueryLike
 
+import sys
+if sys.version_info.minor < 9:
+    from typing import Mapping
+    MappingAnnotation = Mapping
+else:
+    MappingAnnotation = MappingProxyType
+
 TextLike = Union[str, List[str], Dict[str, "TextLike"]]
 
 class Tool(abc.ABC):
@@ -24,7 +31,7 @@ class Tool(abc.ABC):
         return self._description
     
     @property
-    def input_description(self) -> MappingProxyType[str, str]:
+    def input_description(self) -> MappingAnnotation[str, str]:
         return MappingProxyType(self._input_description)
 
     @final
@@ -62,7 +69,7 @@ class Tool(abc.ABC):
         registry = LLMRegistry()
         interface = registry.get_model(self._model_name)
         
-        result = interface.query(prompt, json_mode)
+        result = interface(prompt, json_mode)
 
         if json_mode:
             result = json.loads(result)
