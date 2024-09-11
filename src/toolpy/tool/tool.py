@@ -65,11 +65,11 @@ class Tool(abc.ABC):
         '''
         ...
 
-    def _query(self, prompt:QueryLike, json_mode:bool=False) -> TextLike:
+    def _query(self, prompt:QueryLike, json_mode:bool=False, json_schema:Optional[str]=None) -> TextLike:
         registry = LLMRegistry()
         interface = registry.get_model(self._model_name)
         
-        result = interface(prompt, json_mode)
+        result = interface(prompt, json_mode, json_schema)
 
         if json_mode:
             result = json.loads(result)

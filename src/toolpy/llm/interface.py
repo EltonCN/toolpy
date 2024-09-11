@@ -2,7 +2,7 @@ import abc
 import enum
 import threading
 import warnings
-from typing import List, Union, Dict, final, Tuple
+from typing import List, Union, Dict, final, Tuple, Optional
 
 class Role(enum.Enum):
     SYSTEM = 1
@@ -35,7 +35,7 @@ class LLMInterface(abc.ABC):
 
 
     @final
-    def __call__(self, prompt:QueryLike, json_mode:bool=False) -> str:
+    def __call__(self, prompt:QueryLike, json_mode:bool=False, json_schema:Optional[str]=None) -> str:
 
         if json_mode and not self._support_json_mode:
             warnings.warn(f"JSON mode is not supported by this LLM \
@@ -49,29 +49,38 @@ class LLMInterface(abc.ABC):
         
         result = None
 
-        for _ in range(self._n_retry):
+        if self._n_retry == 0:
             try:
-                result = self.query(prompt, json_mode)
+                result = self.query(prompt, json_mode, json_schema)
+            except:
+                self._query_lock.release()
 
-            except KeyboardInterrupt as e:
-                raise e
-            
-            except Exception as _:
-                pass
-
-            if result is not None:
-                break
-
-        else:
-            self._query_lock.release()
-
-            raise RuntimeError(f"Query could not be executed. Model \
+                raise RuntimeError(f"Query could not be executed. Model \
                                failed with prompt:\n---\n{prompt}\n---")
+        else:
+            for _ in range(self._n_retry):
+                try:
+                    result = self.query(prompt, json_mode, json_schema)
+
+                except KeyboardInterrupt as e:
+                    raise e
+                
+                except Exception as _:
+                    pass
+
+                if result is not None:
+                    break
+
+            else:
+                self._query_lock.release()
+
+                raise RuntimeError(f"Query could not be executed. Model \
+                                failed with prompt:\n---\n{prompt}\n---")
 
         self._query_lock.release()
 
         return result
     
     @abc.abstractmethod
-    def query(self, prompt:List[Tuple[Role, str]], json_mode:bool) -> str:
+    def query(self, prompt:List[Tuple[Role, str]], json_mode:bool, json_schema:Optional[str]=None) -> str:
         ...
