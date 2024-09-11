@@ -9,6 +9,7 @@ from toolpy.llm import LLMInterface, Role
 
 class GroqModel(enum.Enum):
     LLAMA3_70B = "llama3-70b-8192"
+    LLAMA3_8B = "llama3-8b-8192"
 
 class GroqInterface(LLMInterface):
     _client : groq.Groq = None 
