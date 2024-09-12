@@ -32,7 +32,7 @@ class GroqInterface(LLMInterface):
 
         self._model = model.value
 
-    def query(self, prompt: List[Tuple[Role, str]], json_mode: bool) -> str:
+    def query(self, prompt: List[Tuple[Role, str]], json_mode: bool, json_schema:Optional[str] = None) -> str:
         messages = []
         for p in prompt:
             if p[0] == Role.SYSTEM:
