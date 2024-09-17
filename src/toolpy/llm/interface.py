@@ -65,7 +65,8 @@ class LLMInterface(abc.ABC):
                 except KeyboardInterrupt as e:
                     raise e
                 
-                except Exception as _:
+                except Exception as e:
+                    print(e)
                     pass
 
                 if result is not None:
