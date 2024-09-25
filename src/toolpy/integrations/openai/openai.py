@@ -11,10 +11,13 @@ class OpenAIInterface(LLMInterface):
 
     def __init__(self, model:str, n_retry:int = 0, 
                  api_key:Optional[str] = None, 
-                 base_url:Optional[str]=None,) -> None:
+                 base_url:Optional[str]=None,
+                 client:openai.OpenAI|None = None) -> None:
         super().__init__(support_json_mode=True, support_multi_thread=True, n_retry=n_retry)
 
-        if OpenAIInterface._client is None:
+        if client is not None:
+            OpenAIInterface._client = client
+        elif OpenAIInterface._client is None:
 
             if api_key is None:
                 api_key = os.environ.get("OPENAI_API_KEY")
