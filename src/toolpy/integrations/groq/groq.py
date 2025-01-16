@@ -12,7 +12,7 @@ class GroqModel(enum.Enum):
     LLAMA3_8B = "llama3-8b-8192"
 
 class GroqInterface(LLMInterface):
-    _client : groq.Groq = None 
+    _client : groq.Groq | None = None 
 
     def __init__(self, model:Optional[GroqModel] = None, n_retry:int = 0, api_key:Optional[str] = None) -> None:
         super().__init__(True, False, n_retry)
