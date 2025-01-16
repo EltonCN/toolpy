@@ -1,3 +1,4 @@
+import copy
 from types import MappingProxyType
 from typing import Optional, Dict, Tuple
 
@@ -15,7 +16,7 @@ class BasicTool(Tool):
         super().__init__(description=description, input_description=input_description, model_name=model_name)
     
         self._prompt_template = prompt_template
-        self._return_description = MappingProxyType(return_description)
+        self._return_description = return_description #MappingProxyType(return_description)
         self._system_message = system_message
         self._json_mode = json_mode
         self._json_schema = json_schema
@@ -35,4 +36,4 @@ class BasicTool(Tool):
 
         prompt.append((Role.USER, user_message))
 
-        return self._query(prompt, self._json_mode, self._json_schema), self._return_description
+        return self._query(prompt, self._json_mode, self._json_schema), copy.deepcopy(self._return_description)
